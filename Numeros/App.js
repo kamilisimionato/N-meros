@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Keyboard } from 'react-native';
 
 export default function App() {
   const [numero, setNumero] = useState('');
@@ -9,6 +9,10 @@ export default function App() {
   const [jogoFinalizado, setJogoFinalizado] = useState(false);
 
   const verificarNumero = () => {
+    if (jogoFinalizado) return;
+    
+    Keyboard.dismiss(); // Fecha o teclado
+    
     if (numero === '' || isNaN(numero)) {
       setMensagem('Digite um número válido!');
       return;
@@ -53,12 +57,14 @@ export default function App() {
       <Text style={styles.titulo}>Qual o número de 0 a 100?</Text>
       
       <TextInput
-        style={styles.input}
+        style={[styles.input, { marginBottom: 20 }]}
         keyboardType="numeric"
         placeholder="Digite seu palpite"
         value={numero}
         onChangeText={setNumero}
         editable={!jogoFinalizado}
+        onSubmitEditing={verificarNumero} // Adicionado esta linha para responder ao Enter
+        returnKeyType="done" // Altera o botão do teclado para "done"
       />
 
       <TouchableOpacity
@@ -74,7 +80,7 @@ export default function App() {
 
       {jogoFinalizado && (
         <TouchableOpacity style={styles.botaoReiniciar} onPress={reiniciarJogo}>
-          <Text style={styles.textoBotao}>Jogar Novamente</Text>
+          <Text style={[styles.textoBotao, { color: 'black' }]}>Jogar Novamente</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -95,25 +101,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: '#333',
   },
-  subtitulo: {
-    fontSize: 18,
-    marginBottom: 30,
-    color: '#666',
-  },
-  numeroContainer: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
+  input: {
+    height: 50,
+    width: '80%',
+    borderColor: '#6200ee',
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    fontSize: 16,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 30,
-    elevation: 5,
-  },
-  numero: {
-    fontSize: 48,
-    fontWeight: 'bold',
-    color: '#6200ee',
   },
   botao: {
     backgroundColor: '#6200ee',
@@ -123,8 +119,27 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   textoBotao: {
-    color: 'bla',
+    color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  mensagem: {
+    fontSize: 18,
+    marginVertical: 10,
+    textAlign: 'center',
+    color: '#333',
+  },
+  tentativas: {
+    fontSize: 16,
+    marginBottom: 10,
+    color: '#666',
+  },
+  botaoReiniciar: {
+    backgroundColor: '#f5f5f5',
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 30,
+    borderWidth: 1,
+    borderColor: '#6200ee',
   },
 });

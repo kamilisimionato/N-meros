@@ -4,3 +4,5 @@ git config --global user.email kamili.simionato@etec.sp.gov.br
 cd Numeros
 
 npx create-expo-app@latest Numeros --template blank
+
+
