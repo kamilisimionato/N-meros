@@ -5,4 +5,4 @@ cd Numeros
 
 npx create-expo-app@latest Numeros --template blank
 
-
+npx expo install react-dom react-native-web @expo/metro-runtime
